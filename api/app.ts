@@ -1,13 +1,24 @@
 // app.ts
 import express from 'express';
-import tarefaRoutes from './routes/tarefaRoutes.js';
+import requestLogger from './middleware/requestLogger.js';
+import errorHandler from './middleware/errorHandler.js';
+import routes from './routes/index.js';
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configurando as rotas da aplicação para utilizar as rotas relacionadas às tarefas
+
+//Middlewares globais
 app.use(express.json());
-app.use('/api', tarefaRoutes);
+app.use(requestLogger)
+
+//Rotas
+app.use('/api', routes);
+
+//Error handler
+app.use(errorHandler);
+
 
 // Inicializando o servidor
 app.listen(PORT, () => {
