@@ -11,11 +11,11 @@ export default function validateTarefaBody(req: Request, res:Response, next: Nex
 }
 
 export function validateHeader(req: Request, res:Response, next: NextFunction){
-    const header  = req.headers['xpto']
+    const header  = req.headers['token']
 
-    if (header == "xpto"){
+    if (header === "xpto"){
         next()
     } else {
-        return res.status(400).json({error:"token invalido"})
+        return res.status(401).json({error:"token invalido"})
     }
 }

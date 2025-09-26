@@ -3,6 +3,7 @@ import express from 'express';
 import requestLogger from './middleware/requestLogger.js';
 import errorHandler from './middleware/errorHandler.js';
 import routes from './routes/index.js';
+// import { validateHeader } from './middleware/validateTarefaBody.js';
 
 
 const app = express();
@@ -13,6 +14,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(requestLogger)
 
+// app.use(validateHeader)
 //Rotas
 app.use('/api', routes);
 
