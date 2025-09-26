@@ -21,5 +21,7 @@ Uma API RESTful simples construída com Node.js, Express e TypeScript.
    npm install
 
 3. Como rodar (modo desenvolvimento):
-  ```bash
-  npm run dev
+   ```bash
+   npm run dev
+O servidor será iniciado em http://localhost:3000
+
