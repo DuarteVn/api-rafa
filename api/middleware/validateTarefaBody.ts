@@ -12,7 +12,7 @@ export default function validateTarefaBody(req: Request, res:Response, next: Nex
 
 export function validateHeader(req: Request, res:Response, next: NextFunction){
     const header  = req.headers['token']
-
+    
     if (header === "xpto"){
         next()
     } else {
