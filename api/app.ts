@@ -15,7 +15,6 @@ app.use(express.json());
 app.use(requestLogger)
 
 // app.use(validateHeader)
-//Rotas
 app.use('/api', routes);
 
 //Error handler

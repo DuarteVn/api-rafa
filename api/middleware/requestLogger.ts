@@ -5,3 +5,10 @@ export default function requestLogger(req: Request, res:Response, next: NextFunc
   console.log('Request Type:', req.method)
   next()
 }
+
+// import { Request, Response, NextFunction } from 'express';
+
+// export default function requestLogger(req: Request, _res: Response, next: NextFunction) {
+//   console.log(`Request Type: ${req.method}  URL: ${req.originalUrl}`);
+//   next();
+// }

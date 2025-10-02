@@ -1,20 +1,43 @@
-import mysql from 'mysql2/promise'
+// db/clientePoolManager.ts
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-//Variável de módulo que guarda uma instância de pool
-let centralPool: mysql.Pool | null = null // Declara uma variável de instância única // Lazy
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
-export function getCentralPool(): mysql.Pool{
-    if(!centralPool){ //Garante que só crie 1x
-       centralPool = mysql.createPool({
-            host: process.env.CENTRAL_DB_HOST,
-            port: Number(process.env.CENTRAL_DB_PORT),
-            user: process.env.CENTRAL_DB_USER,
-            password:process.env.CENTRAL_DB_PASSWORD,
-            database: process.env.CENTRAL_DB_NAME,
-            waitForConnections: true, //quando o pool atingir o limite, espera uma conexão ficar livre ao inves de falhar
-            connectionLimit: 10, 
-            queueLimit: 0 // 0 = Ilimitado, a fila de espera por conexões pode crescer sem limite (req)
-        });
+let centralPool: mysql.Pool | null = null;
+
+export function getCentralPool(): mysql.Pool {
+  if (!centralPool) {
+    // Debug opcional
+    console.log('[ENV CHECK] host=', process.env.CENTRAL_DB_HOST, 'user=', process.env.CENTRAL_DB_USER);
+
+    if (!process.env.CENTRAL_DB_HOST || !process.env.CENTRAL_DB_USER || !process.env.CENTRAL_DB_NAME) {
+      throw new Error('Variáveis do banco CENTRAL ausentes. Verifique .env e o caminho no dotenv.config().');
     }
-    return centralPool;
-} 
+
+    centralPool = mysql.createPool({
+      host: process.env.CENTRAL_DB_HOST,
+      port: Number(process.env.CENTRAL_DB_PORT || 3306),
+      user: process.env.CENTRAL_DB_USER,
+      password: process.env.CENTRAL_DB_PASSWORD ?? '',
+      database: process.env.CENTRAL_DB_NAME,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
+  }
+  return centralPool;
+}
+
+
+
+//  NOME SUJEITO A ALTERAÇÕES, ELE ESTÁ SENDO USADO 
+// //COMO UM SINGLETON DE CONEXÃO PARA A BASE CENTRAL.
+// ! 
+// *
+// TODO
+// ?
